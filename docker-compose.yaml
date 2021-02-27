@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      # MYSQL_USER: "CommanderGQL"
+      MYSQL_ROOT_PASSWORD: 'pa55w0rd!'
+    ports:
+      - '3306:3306'
