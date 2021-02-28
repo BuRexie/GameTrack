@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,8 @@ namespace GameTrack
                 MySqlServerVersion.AutoDetect(Configuration.GetConnectionString("GameTrackConnectionString")))
             );
 
-            // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped(typeof(GameTrackDbContext));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
