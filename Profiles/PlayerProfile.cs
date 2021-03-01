@@ -10,7 +10,6 @@ namespace GameTrack.Profiles
     {
       CreateMap<Player, PlayerReadDto>();
       CreateMap<PlayerCreateDto, Player>();
-      CreateMap<PlayerUpdateDto, Player>();
     }
   }
 }

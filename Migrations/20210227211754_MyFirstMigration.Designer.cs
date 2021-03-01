@@ -2,14 +2,16 @@
 using GameTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameTrack.Migrations
 {
     [DbContext(typeof(GameTrackDbContext))]
-    partial class GameTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210227211754_MyFirstMigration")]
+    partial class MyFirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace GameTrack.Migrations
 
                     b.Property<string>("PlayerId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<decimal>("Progress")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("Id");
 

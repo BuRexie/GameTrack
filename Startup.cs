@@ -37,19 +37,13 @@ namespace GameTrack
             });
 
             // setup connection string
-            //services.AddDbContextFactory<GameTrackDbContext>(opt => opt.UseMySql(
-            //    Configuration.GetConnectionString("GameTrackConnectionString"), 
-            //    MySqlServerVersion.AutoDetect(Configuration.GetConnectionString("GameTrackConnectionString")))
-            //);
+            services.AddDbContextFactory<GameTrackDbContext>(opt => opt.UseMySql(
+                Configuration.GetConnectionString("GameTrackConnectionString"), 
+                MySqlServerVersion.AutoDetect(Configuration.GetConnectionString("GameTrackConnectionString")))
+            );
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped(typeof(GameTrackDbContext));
-            services.AddDbContext<GameTrackDbContext>(opt => opt.UseSqlServer
-            (Configuration.GetConnectionString("GameTrackConnection")));
-
-            services.AddScoped<IPlayerRepo, SqlPlayerRepo>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
