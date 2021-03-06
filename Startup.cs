@@ -38,13 +38,13 @@ namespace GameTrack
             });
 
             // setup connection string
-            //services.AddDbContextFactory<GameTrackDbContext>(opt => opt.UseMySql(
-            //    Configuration.GetConnectionString("GameTrackConnectionString"), 
-            //    MySqlServerVersion.AutoDetect(Configuration.GetConnectionString("GameTrackConnectionString")))
-            //);
+            services.AddDbContextFactory<GameTrackDbContext>(opt => opt.UseMySql(
+               Configuration.GetConnectionString("GameTrackConnectionString"), 
+               MySqlServerVersion.AutoDetect(Configuration.GetConnectionString("GameTrackConnectionString")))
+            );
 
-            services.AddDbContext<GameTrackDbContext>(opt => opt.UseSqlServer
-            (Configuration.GetConnectionString("GameTrackConnection")));
+            // services.AddDbContext<GameTrackDbContext>(opt => opt.UseSqlServer
+            // (Configuration.GetConnectionString("GameTrackConnection")));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped(typeof(GameTrackDbContext));

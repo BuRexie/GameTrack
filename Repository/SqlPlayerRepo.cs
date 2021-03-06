@@ -1,4 +1,5 @@
 ﻿using GameTrack.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,14 @@ namespace GameTrack.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<Player> GetPlayers()
+        public async Task<IEnumerable<Player>> GetPlayers()
         {
-            return _context.Players.ToList();
+            return await _context.Players.ToListAsync();
         }
 
-        public Player GetPlayer(int id)
+        public async Task<Player> GetPlayer(string id)
         {
-            return _context.Players.FirstOrDefault(p => p.Id == id);
+            return await _context.Players.FirstOrDefaultAsync(p => p.PlayerId.Equals(id));
         }
 
 
@@ -45,9 +46,9 @@ namespace GameTrack.Data.Repository
             _context.Players.Remove(player);
         }
 
-        public bool SaveChanges()
+        public async Task<bool> SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
         }
 
         public void UpdatePlayer(Player player)

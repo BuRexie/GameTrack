@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using GameTrack.Data.Repository;
 using GameTrack.Dtos;
 using GameTrack.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameTrack.Controller
@@ -23,43 +26,49 @@ namespace GameTrack.Controller
 
         [HttpGet]
 
-        public ActionResult<IEnumerable<PlayerReadDto>> GetAllPlayers()
+        public async Task<ActionResult<IEnumerable<PlayerReadDto>>> GetAllPlayers()
         {
-            var players = _repository.GetPlayers();
+            var players = await _repository.GetPlayers();
 
             return Ok(_mapper.Map<IEnumerable<PlayerReadDto>>(players));
 
         }
 
         [HttpGet("{id}", Name = "GetPlayer")]
-
-        public ActionResult<PlayerReadDto> GetPlayer(int id)
+        public async Task<ActionResult<PlayerReadDto>> GetPlayer(string id)
         {
-            var player = _repository.GetPlayer(id);
-
-            if (player != null)
+            try
             {
-                return Ok(_mapper.Map<PlayerReadDto>(player));
+                var player = await _repository.GetPlayer(id);
+
+                if (player != null)
+                {
+                    return Ok(_mapper.Map<PlayerReadDto>(player));
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpPost]
-        public ActionResult<PlayerReadDto> CreatePlayer(PlayerCreateDto playerCreateDto)
+        public async Task<ActionResult<PlayerReadDto>> CreatePlayer(PlayerCreateDto playerCreateDto)
         {
             var player = _mapper.Map<Player>(playerCreateDto);
             _repository.CreatePlayer(player);
-            _repository.SaveChanges();
+            await _repository.SaveChanges();
 
             var playerReadDto = _mapper.Map<PlayerReadDto>(player);
 
-            return CreatedAtRoute(nameof(GetPlayer), new { Id = playerReadDto.Id }, playerReadDto);
+            return CreatedAtRoute(nameof(GetPlayer), new { Id = playerReadDto.PlayerId }, playerReadDto);
         }
 
-        [HttpPut]
-        public ActionResult UpdatePlayer(int id, PlayerUpdateDto playerUpdateDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePlayer(string id, PlayerUpdateDto playerUpdateDto)
         {
-            var player = _repository.GetPlayer(id);
+            var player = await _repository.GetPlayer(id);
             if (player == null)
             {
                 return NotFound();
@@ -68,21 +77,21 @@ namespace GameTrack.Controller
 
             _repository.UpdatePlayer(player);
 
-            _repository.SaveChanges();
+            await _repository.SaveChanges();
 
             return NoContent();
         }
 
-        [HttpDelete]
-        public ActionResult DeleteMessage(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMessage(string id)
         {
-            var player = _repository.GetPlayer(id);
+            var player = await _repository.GetPlayer(id);
             if (player == null)
             {
                 return NotFound();
             }
             _repository.DeletePlayer(player);
-            _repository.SaveChanges();
+            await _repository.SaveChanges();
 
             return NoContent();
         }

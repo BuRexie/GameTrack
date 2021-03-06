@@ -8,9 +8,9 @@ namespace GameTrack.Data.Repository
 {
     public interface IPlayerRepo
     {
-        bool SaveChanges();
-        IEnumerable<Player> GetPlayers();
-        Player GetPlayer(int id);
+        Task<bool> SaveChanges();
+        Task<IEnumerable<Player>> GetPlayers();
+        Task<Player> GetPlayer(string id);
         void CreatePlayer(Player player);
         void UpdatePlayer(Player player);
         void DeletePlayer(Player player);
